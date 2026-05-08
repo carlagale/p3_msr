@@ -1,0 +1,9 @@
+# Default initial positions for rover's ros2_control fake system
+
+initial_positions:
+  base_gripper_link_joint: 0
+  left_gripper_link_joint: 0
+  prismatic_scara_link_joint: 0
+  revolute1_link_joint: 0
+  revolute2_link_joint: 0
+  right_gripper_link_joint: 0

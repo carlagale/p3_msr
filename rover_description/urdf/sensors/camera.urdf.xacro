@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<robot name="camera" xmlns:xacro="http://wiki.ros.org/xacro">
+    <xacro:include filename="$(find rover_description)/urdf/utils/utils.urdf.xacro"/>
+    <!-- ####### CAMERA ####### -->
+    <xacro:macro name="camera"
+                params="frame_prefix
+                       parent
+                       *origin
+                       node_name:=camera
+                       node_namespace:=${None}
+                       topic_prefix:=~/
+                       horizontal_fov:=80
+                       vertical_fov:=60
+                       video_width:=1280
+                       video_height:=720
+                       video_fps:=30">
+        <!-- node_namespace is used from node_name if not set -->
+        <xacro:if value="${node_namespace == None}">
+        <xacro:property name="node_namespace" value="${node_name}"/>
+        </xacro:if>
+
+        <joint name="${frame_prefix}_camera_base_joint" type="fixed">
+            <xacro:insert_block name="origin" />
+            <parent link="${parent}"/>
+            <child link="${frame_prefix}_camera_base_link" />
+        </joint>
+        <link name="${frame_prefix}_camera_base_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.025 0.05 0.025"/>
+                </geometry>
+                <material name="light_grey">
+                    <color rgba="0.35 0.35 0.35 1"/>
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.025 0.05 0.025"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.135" />
+                <origin xyz="0 0 0" />
+                <xacro:solid_cuboid_inertia m="0.135" w="0.033" h="0.175" d="0.03" />
+            </inertial>
+        </link>
+
+        <!-- Camera-->
+        <joint name="${frame_prefix}_camera_joint" type="fixed">
+            <origin xyz="0.0 -0.06 0.0" rpy="0.0 0.0 0.0" />
+            <parent link="${frame_prefix}_camera_base_link" />
+            <child link="${frame_prefix}_camera_frame" />
+        </joint>
+        <link name="${frame_prefix}_camera_frame"/>
+        <joint name="${frame_prefix}color_optical_joint" type="fixed">
+            <origin xyz="0.0 0 0.0" rpy="0.0 ${pi/2} 0.0" />
+            <parent link="${frame_prefix}_camera_frame" />
+            <child link="${frame_prefix}_camera_optical_frame" />
+        </joint>
+        <link name="${frame_prefix}_camera_optical_frame"/>
+        <gazebo reference="${frame_prefix}_camera_frame">
+            <sensor name="${frame_prefix}_sensor" type="camera">
+                <visualize>true</visualize>
+                <update_rate>10</update_rate>
+                <topic>/${frame_prefix}/image</topic>
+                <camera>
+                    <horizontal_fov>${radians(float(horizontal_fov))}</horizontal_fov>
+                    <image>
+                        <width>${video_width}</width>
+                        <height>${video_height}</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>100.0</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                    <optical_frame_id>${frame_prefix}_camera_frame</optical_frame_id>
+                </camera>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+    <xacro:macro name="sensor_camera"
+            params="frame_prefix
+                       parent
+                       *origin
+                       node_namespace:=cameras
+                       node_name
+                       topic_prefix:=~/">
+
+        <xacro:camera frame_prefix="${frame_prefix}"
+                                     parent="${parent}"
+                                     node_namespace="${node_namespace}"
+                                     node_name="${node_name}"
+                                     topic_prefix="${topic_prefix}"
+                                     horizontal_fov="110"
+                                     vertical_fov="70"
+                                     video_width="1920"
+                                     video_height="1080"
+                                     video_fps="30">
+            <xacro:insert_block name="origin" />
+        </xacro:camera>
+    </xacro:macro>
+</robot>

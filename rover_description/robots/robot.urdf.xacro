@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+<robot name="rover" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <!-- includes -->
+    <xacro:include filename="$(find rover_description)/urdf/base/robot_base.urdf.xacro"/>
+    <xacro:include filename="$(find rover_description)/urdf/wheels/wheels.urdf.xacro"/>
+    <xacro:include filename="$(find rover_description)/urdf/arm/scara.urdf.xacro"/>
+    <xacro:include filename="$(find rover_description)/urdf/arm/gripper.urdf.xacro"/>
+    <xacro:include filename="$(find rover_description)/urdf/ros2_control.urdf.xacro"/>
+    <xacro:include filename="$(find rover_description)/urdf/utils/utils.urdf.xacro"/>
+    <xacro:include filename="$(find rover_description)/urdf/sensors/camera.urdf.xacro"/>
+    <xacro:include filename="$(find rover_description)/urdf/sensors/imu_sensor.urdf.xacro"/>
+    <xacro:include filename="$(find rover_description)/urdf/sensors/gps.urdf.xacro"/>
+
+    <!-- properties -->
+    <xacro:property name="PI" value="3.1415926535897931"/>
+
+    <!-- arguments -->
+    <xacro:arg name="robot_ns" default=""/>
+    <xacro:arg name="prefix" default=""/>
+
+    <!-- robot parts -->
+    <xacro:utils/>
+
+    <!-- base -->
+    <xacro:robot_base/>
+
+    <!-- wheels -->
+    <xacro:wheels parent="base_link"/>
+
+    <!-- arm -->
+    <xacro:scara parent="base_link"/>
+    <xacro:gripper parent="prismatic_scara_link"/>
+
+    <!-- sensors -->
+    <xacro:camera node_name="front_camera" node_namespace="$(arg robot_ns)" frame_prefix="$(arg prefix)front_camera" parent="$(arg prefix)base_link" >
+        <origin xyz="-1.65 0.0 0.82" rpy="0.0 0.0 ${PI}"/>
+    </xacro:camera>
+
+    <xacro:camera node_name="arm_camera" node_namespace="$(arg robot_ns)" frame_prefix="$(arg prefix)arm_camera" parent="$(arg prefix)base_gripper_link" >
+        <origin xyz="0.0 0.0 -0.05" rpy="0.0 ${PI/2} ${PI}"/>
+    </xacro:camera>
+    
+    <xacro:imu_sensor ns="$(arg robot_ns)" prefix="$(arg prefix)imu" parent="$(arg prefix)stand_scara2_link">
+        <origin xyz="0.0 0.0 5.0" rpy="0 0 0"/>
+    </xacro:imu_sensor>
+
+    <xacro:gps node_namespace="$(arg robot_ns)" frame_prefix="$(arg prefix)gps" parent="$(arg prefix)base_link" simulation="true">
+        <origin xyz="-1.65 0.2 0.70" rpy="0 0 0"/>
+    </xacro:gps>
+
+    <!-- gazebo ROS control plugins -->
+    <xacro:include filename="$(find rover_description)/urdf/ros2_control.urdf.xacro"/>
+    <xacro:arg name="config_controllers" default="$(find rover_description)/config/rover_controllers.yaml"/>
+    <xacro:arg name="update_rate" default="30"/>
+    <xacro:ros2_control/>
+   
+</robot>

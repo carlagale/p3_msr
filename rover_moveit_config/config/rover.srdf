@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="rover">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="scara">
+        <link name="revolute1_link"/>
+        <link name="revolute2_link"/>
+        <link name="prismatic_scara_link"/>
+        <link name="base_gripper_link"/>
+        <joint name="revolute1_link_joint"/>
+        <joint name="revolute2_link_joint"/>
+        <joint name="prismatic_scara_link_joint"/>
+        <joint name="base_gripper_link_joint"/>
+        <chain base_link="base_scara_link" tip_link="base_gripper_link"/>
+    </group>
+    <group name="gripper">
+        <link name="left_gripper_link"/>
+        <link name="right_gripper_link"/>
+        <joint name="left_gripper_link_joint"/>
+        <joint name="right_gripper_link_joint"/>
+    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="open" group="gripper">
+        <joint name="left_gripper_link_joint" value="0.001"/>
+        <joint name="right_gripper_link_joint" value="-0.001"/>
+    </group_state>
+    <group_state name="close" group="gripper">
+        <joint name="left_gripper_link_joint" value="0.125"/>
+        <joint name="right_gripper_link_joint" value="-0.125"/>
+    </group_state>
+    <group_state name="hold" group="scara">
+        <joint name="base_gripper_link_joint" value="0"/>
+        <joint name="prismatic_scara_link_joint" value="-0.5"/>
+        <joint name="revolute1_link_joint" value="0"/>
+        <joint name="revolute2_link_joint" value="0"/>
+    </group_state>
+    <group_state name="target" group="scara">
+        <joint name="base_gripper_link_joint" value="0"/>
+        <joint name="prismatic_scara_link_joint" value="1.3"/>
+        <joint name="revolute1_link_joint" value="0"/>
+        <joint name="revolute2_link_joint" value="0"/>
+    </group_state>
+    <group_state name="release" group="scara">
+        <joint name="base_gripper_link_joint" value="-0.538"/>
+        <joint name="prismatic_scara_link_joint" value="-0.2"/>
+        <joint name="revolute1_link_joint" value="2.5502"/>
+        <joint name="revolute2_link_joint" value="1.1276"/>
+    </group_state>
+    <group_state name="lobby" group="scara">
+        <joint name="base_gripper_link_joint" value="-0.1909"/>
+        <joint name="prismatic_scara_link_joint" value="-1.1878"/>
+        <joint name="revolute1_link_joint" value="3.0012"/>
+        <joint name="revolute2_link_joint" value="0.2949"/>
+    </group_state>
+    <group_state name="home" group="scara">
+        <joint name="base_gripper_link_joint" value="0"/>
+        <joint name="prismatic_scara_link_joint" value="0"/>
+        <joint name="revolute1_link_joint" value="0"/>
+        <joint name="revolute2_link_joint" value="0"/>
+    </group_state>
+    <group_state name="blue_aprox" group="scara">
+        <joint name="base_gripper_link_joint" value="0"/>
+        <joint name="prismatic_scara_link_joint" value="0"/>
+        <joint name="revolute1_link_joint" value="1.57"/>
+        <joint name="revolute2_link_joint" value="0"/>
+    </group_state>
+    <group_state name="red_aprox" group="scara">
+        <joint name="base_gripper_link_joint" value="0"/>
+        <joint name="prismatic_scara_link_joint" value="0"/>
+        <joint name="revolute1_link_joint" value="-1.57"/>
+        <joint name="revolute2_link_joint" value="0"/>
+    </group_state>
+    <group_state name="blue_pick" group="scara">
+        <joint name="base_gripper_link_joint" value="0"/>
+        <joint name="prismatic_scara_link_joint" value="1.3"/>
+        <joint name="revolute1_link_joint" value="1.57"/>
+        <joint name="revolute2_link_joint" value="0"/>
+    </group_state>
+    <group_state name="red_place" group="scara">
+        <joint name="base_gripper_link_joint" value="0"/>
+        <joint name="prismatic_scara_link_joint" value="1.0"/>
+        <joint name="revolute1_link_joint" value="-1.57"/>
+        <joint name="revolute2_link_joint" value="0"/>
+    </group_state>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="gripper" parent_link="base_gripper_link" group="gripper" parent_group="scara"/>
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="Suzanne_link" link2="arm_camera_camera_base_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="base_footprint" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="base_scara_link" reason="Adjacent"/>
+    <disable_collisions link1="Suzanne_link" link2="front_camera_camera_base_link" reason="Default"/>
+    <disable_collisions link1="Suzanne_link" link2="gps_base_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="imu_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="revolute1_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="revolute2_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="stand_scara1_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="Suzanne_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="base_footprint" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="base_gripper_link" reason="Adjacent"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="base_link" reason="Adjacent"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="base_scara_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="front_camera_camera_base_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="gps_base_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="imu_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="left_gripper_link" reason="Adjacent"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="revolute1_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="revolute2_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="stand_scara1_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="arm_camera_camera_base_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="base_link" reason="Adjacent"/>
+    <disable_collisions link1="base_footprint" link2="base_scara_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="front_camera_camera_base_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="gps_base_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="imu_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="revolute1_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="revolute2_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="right_gripper_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="stand_scara1_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="base_footprint" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="base_gripper_link" link2="imu_link" reason="Never"/>
+    <disable_collisions link1="base_gripper_link" link2="left_gripper_link" reason="Adjacent"/>
+    <disable_collisions link1="base_gripper_link" link2="prismatic_scara_link" reason="Adjacent"/>
+    <disable_collisions link1="base_gripper_link" link2="right_gripper_link" reason="Adjacent"/>
+    <disable_collisions link1="base_gripper_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="base_link" link2="base_scara_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="front_camera_camera_base_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="gps_base_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="imu_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="revolute1_link" reason="Never"/>
+    <disable_collisions link1="base_link" link2="revolute2_link" reason="Never"/>
+    <disable_collisions link1="base_link" link2="stand_scara1_link" reason="Never"/>
+    <disable_collisions link1="base_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="base_link" link2="wheel.001_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="wheel.002_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="wheel.003_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="wheel.004_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="wheel.005_link" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="wheel_link" reason="Adjacent"/>
+    <disable_collisions link1="base_scara_link" link2="front_camera_camera_base_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="gps_base_link" reason="Default"/>
+    <disable_collisions link1="base_scara_link" link2="imu_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="revolute1_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="revolute2_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="stand_scara1_link" reason="Adjacent"/>
+    <disable_collisions link1="base_scara_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="base_scara_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="gps_base_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="imu_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="revolute1_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="revolute2_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="stand_scara1_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="front_camera_camera_base_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="imu_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="left_gripper_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="revolute1_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="revolute2_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="stand_scara1_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="gps_base_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="left_gripper_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="prismatic_scara_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="revolute1_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="right_gripper_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="stand_scara1_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="imu_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_link" link2="prismatic_scara_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_link" link2="right_gripper_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="prismatic_scara_link" link2="revolute2_link" reason="Adjacent"/>
+    <disable_collisions link1="prismatic_scara_link" link2="right_gripper_link" reason="Never"/>
+    <disable_collisions link1="prismatic_scara_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="prismatic_scara_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="prismatic_scara_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="revolute1_link" link2="revolute2_link" reason="Default"/>
+    <disable_collisions link1="revolute1_link" link2="stand_scara1_link" reason="Adjacent"/>
+    <disable_collisions link1="revolute1_link" link2="stand_scara2_link" reason="Adjacent"/>
+    <disable_collisions link1="revolute1_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="revolute1_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="revolute1_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="revolute1_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="revolute1_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="revolute1_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="revolute2_link" link2="stand_scara2_link" reason="Adjacent"/>
+    <disable_collisions link1="revolute2_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="revolute2_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="revolute2_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="revolute2_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="revolute2_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="revolute2_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="right_gripper_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="stand_scara1_link" link2="stand_scara2_link" reason="Never"/>
+    <disable_collisions link1="stand_scara1_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="stand_scara1_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="stand_scara1_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="stand_scara1_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="stand_scara1_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="stand_scara1_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="stand_scara2_link" link2="wheel.001_link" reason="Never"/>
+    <disable_collisions link1="stand_scara2_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="stand_scara2_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="stand_scara2_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="stand_scara2_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="stand_scara2_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="wheel.001_link" link2="wheel.002_link" reason="Never"/>
+    <disable_collisions link1="wheel.001_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="wheel.001_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="wheel.001_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="wheel.001_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="wheel.002_link" link2="wheel.003_link" reason="Never"/>
+    <disable_collisions link1="wheel.002_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="wheel.002_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="wheel.002_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="wheel.003_link" link2="wheel.004_link" reason="Never"/>
+    <disable_collisions link1="wheel.003_link" link2="wheel.005_link" reason="Never"/>
+    <disable_collisions link1="wheel.003_link" link2="wheel_link" reason="Adjacent"/>
+    <disable_collisions link1="wheel.004_link" link2="wheel.005_link" reason="Adjacent"/>
+    <disable_collisions link1="wheel.004_link" link2="wheel_link" reason="Never"/>
+    <disable_collisions link1="wheel.005_link" link2="wheel_link" reason="Never"/>
+</robot>

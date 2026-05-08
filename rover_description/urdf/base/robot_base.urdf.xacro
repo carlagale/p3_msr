@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<robot name="rover" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <xacro:macro name="robot_base">
+
+        <joint name="base_link_joint" type="fixed">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 1.00000"/>
+            <parent link="base_footprint"/>
+            <child link="base_link"/>
+        </joint>
+
+        <link name="base_footprint">
+        <collision name="base_footprint_collision">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+            <box size="0.10000 0.10000 0.10000"/>
+            </geometry>
+        </collision>
+        <visual name="base_footprint">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <material name="red.001"/>
+            <geometry>
+            <box size="0.10000 0.10000 0.10000"/>
+            </geometry>
+        </visual>
+        </link>
+
+        <link name="base_link">
+            <collision name="base_rover.001_collision">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.005.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </collision>
+            <collision name="base_rover.002_collision">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.006.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </collision>
+            <collision name="base_rover.003_collision">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.007.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </collision>
+            <collision name="base_rover.004_collision">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.008.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </collision>
+            <collision name="base_rover.005_collision">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.009.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </collision>
+            <collision name="base_rover_collision">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.001.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </collision>
+            <collision name="base_rover_collision.000">
+            <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00391 -0.00000 0.01347"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.001.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </collision>
+            <inertial>
+            <inertia ixx="75.00744" ixy="-0.00000" ixz="-7.63177" iyy="382.42206" iyz="-0.00000" izz="410.77399"/>
+            <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00000 0.00000 0.00000"/>
+            <mass value="100.00000"/>
+            </inertial>
+            <visual name="base_rover">
+            <material name="x"/>
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.001.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </visual>
+            <visual name="base_rover.001">
+            <material name="x"/>
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.005.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </visual>
+            <visual name="base_rover.002">
+            <material name="x"/>
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.006.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </visual>
+            <visual name="base_rover.003">
+            <material name="x"/>
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.007.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </visual>
+            <visual name="base_rover.004">
+            <material name="x"/>
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.008.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </visual>
+            <visual name="base_rover.005">
+            <material name="x"/>
+            <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.009.dae" scale="1.75000 0.70000 0.25000"/>
+            </geometry>
+            </visual>
+        </link>
+
+        <joint name="stand.0003_link_joint" type="fixed">
+            <origin rpy="1.57080 0.00000 0.00000" xyz="-0.74391 0.70000 -0.05299"/>
+            <parent link="base_link"/>
+            <child link="stand.0003_link"/>
+        </joint>
+
+        <link name="stand.0003_link">
+            <visual name="stand.0003">
+            <material name="Material"/>
+            <origin rpy="-1.57080 -0.00000 -1.04720" xyz="0.01707 -0.38694 -0.00017"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.011.dae" scale="0.20000 0.00500 0.55000"/>
+            </geometry>
+            </visual>
+        </link>
+
+        <joint name="stand.001_link_joint" type="fixed">
+            <origin rpy="1.57080 0.00000 0.00000" xyz="0.73609 -0.70000 -0.05299"/>
+            <parent link="base_link"/>
+            <child link="stand.001_link"/>
+        </joint>
+
+        <link name="stand.001_link">
+            <visual name="stand.001">
+            <material name="Material"/>
+            <origin rpy="-0.00000 0.00000 0.00000" xyz="0.26467 -0.34217 0.00015"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cylinder.002.dae" scale="0.01000 0.01000 0.03750"/>
+            </geometry>
+            </visual>
+        </link>
+
+        <joint name="stand.002_link_joint" type="fixed">
+            <origin rpy="1.57080 0.00000 0.00000" xyz="0.73609 0.70000 -0.05299"/>
+            <parent link="base_link"/>
+            <child link="stand.002_link"/>
+        </joint>
+
+        <link name="stand.002_link">
+            <visual name="stand.002">
+            <material name="Material"/>
+            <origin rpy="-0.00000 0.00000 0.00000" xyz="0.26467 -0.34217 -0.00015"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cylinder.006.dae" scale="0.01000 0.01000 0.03750"/>
+            </geometry>
+            </visual>
+        </link>
+
+        <joint name="stand.0045_link_joint" type="fixed">
+            <origin rpy="1.57080 0.00000 0.00000" xyz="-0.73391 -0.70000 -0.05299"/>
+            <parent link="base_link"/>
+            <child link="stand.0045_link"/>
+        </joint>
+
+        <link name="stand.0045_link">
+            <visual name="stand.0045">
+            <material name="Material"/>
+            <origin rpy="-1.57080 -0.00000 -1.04720" xyz="0.00707 -0.38694 0.00017"/>
+            <geometry>
+                <mesh filename="file://$(find rover_description)/meshes/dae/Cube.012.dae" scale="0.20000 0.00500 0.55000"/>
+            </geometry>
+            </visual>
+        </link>
+
+    </xacro:macro>
+</robot>
