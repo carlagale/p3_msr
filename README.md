@@ -191,10 +191,6 @@ En cuanto a la actividad dinámica, se observa un incremento del ruido y picos d
 
 Finalmente, el tramo de mayor intensidad ocurre a partir del segundo 225, coincidiendo con la orden de desplazamiento en línea recta durante 10 metros. Las oscilaciones registradas en este periodo final reflejan las fuerzas inerciales del arranque, el mantenimiento de la velocidad de crucero y las posibles irregularidades del contacto entre las ruedas y el suelo en el entorno de Gazebo.
 
-## Conclusiones
-
-## Referencias
-
 ----------------------------------------------------------------------
 ### Carla García Alejandre
 
